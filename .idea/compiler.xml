@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.8">
+      <module name="Modularizing_Android_Apps.app" target="11" />
+      <module name="Modularizing_Android_Apps.components" target="11" />
+      <module name="Modularizing_Android_Apps.hero.ui-heroDetail" target="11" />
+      <module name="Modularizing_Android_Apps.hero.ui-heroList" target="11" />
+      <module name="ModularizingAndroidApps.buildSrc" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
