@@ -13,6 +13,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.squareup.sqldelight.android.AndroidSqliteDriver
 import de.bembelnaut.courses.modularizingapps.core.DataState
 import de.bembelnaut.courses.modularizingapps.core.Logger
 import de.bembelnaut.courses.modularizingapps.core.ProgressBarState
@@ -33,7 +34,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val getHeros = HeroInteractors.build().getHeros
+        val getHeros = HeroInteractors.build(
+            sqlDriver = AndroidSqliteDriver(
+                schema = HeroInteractors.schema,
+                context = this,
+                name = HeroInteractors.dbName,
+            )
+        ).getHeros
         val logger = Logger("GetHerosTest")
 
         getHeros.execute().onEach { dataState ->

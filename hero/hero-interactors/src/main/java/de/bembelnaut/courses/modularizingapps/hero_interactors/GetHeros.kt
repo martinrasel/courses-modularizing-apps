@@ -3,12 +3,14 @@ package de.bembelnaut.courses.modularizingapps.hero_interactors
 import de.bembelnaut.courses.modularizingapps.core.DataState
 import de.bembelnaut.courses.modularizingapps.core.ProgressBarState
 import de.bembelnaut.courses.modularizingapps.core.UIComponent
+import de.bembelnaut.courses.modularizingapps.hero_datasource.cache.HeroCache
 import de.bembelnaut.courses.modularizingapps.hero_datasource.network.HeroService
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GetHeros(
+    private val cache: HeroCache,
     private val service: HeroService,
 ) {
 
@@ -31,6 +33,12 @@ class GetHeros(
                 )
                 listOf()
             }
+
+            // cache the network data
+            cache.insert(heros)
+
+            // emit data from cache
+            val cachedHeros = cache.selectAll()
 
             emit(DataState.Data(heros))
         } catch (e: Exception) {
