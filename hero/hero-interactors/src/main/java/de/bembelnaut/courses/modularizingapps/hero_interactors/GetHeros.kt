@@ -40,7 +40,7 @@ class GetHeros(
             // emit data from cache
             val cachedHeros = cache.selectAll()
 
-            emit(DataState.Data(heros))
+            emit(DataState.Data(cachedHeros))
         } catch (e: Exception) {
             e.printStackTrace()
             // log to crashlytics?
