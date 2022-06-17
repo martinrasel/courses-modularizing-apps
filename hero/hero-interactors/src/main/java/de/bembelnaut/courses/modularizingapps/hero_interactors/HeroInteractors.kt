@@ -6,15 +6,21 @@ import de.bembelnaut.courses.modularizingapps.hero_datasource.network.HeroServic
 
 data class HeroInteractors(
     val getHeros: GetHeros,
+    val getHeroFromCache: GetHeroFromCache,
 ) {
     companion object Factory {
         fun build(sqlDriver: SqlDriver): HeroInteractors {
+            val cache = HeroCache.build(
+                sqlDriver = sqlDriver
+            )
+
             return HeroInteractors(
                 getHeros = GetHeros(
-                    cache = HeroCache.build(
-                        sqlDriver = sqlDriver
-                    ),
+                    cache = cache,
                     service = HeroService.build(),
+                ),
+                getHeroFromCache = GetHeroFromCache(
+                    cache = cache
                 )
             )
         }

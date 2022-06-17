@@ -24,6 +24,7 @@ import de.bembelnaut.courses.modularizingapps.hero_interactors.HeroInteractors
 import de.bembelnaut.courses.modularizingapps.ui.navigation.Screen
 import de.bembelnaut.courses.modularizingapps.ui.theme.DotaInfoTheme
 import de.bembelnaut.courses.modularizingapps.ui_herodetail.ui.HeroDetail
+import de.bembelnaut.courses.modularizingapps.ui_herodetail.ui.HeroDetailViewModel
 import de.bembelnaut.courses.modularizingapps.ui_herolist.ui.HeroList
 import de.bembelnaut.courses.modularizingapps.ui_herolist.ui.HeroListState
 import de.bembelnaut.courses.modularizingapps.ui_herolist.ui.HeroListViewModel
@@ -53,7 +54,9 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             imageLoader = imageLoader,
                         )
-                        addHeroDetail()
+                        addHeroDetail(
+                            imageLoader = imageLoader,
+                        )
                     }
                 )
             }
@@ -79,13 +82,17 @@ fun NavGraphBuilder.addHeroList(
     }
 }
 
-fun NavGraphBuilder.addHeroDetail() {
+fun NavGraphBuilder.addHeroDetail(
+    imageLoader: ImageLoader,
+) {
     composable(
         route = Screen.HeroDetail.route + "/{heroId}",
         arguments = Screen.HeroDetail.arguments,
     ) {
+        val heroDetailViewModel : HeroDetailViewModel = hiltViewModel()
         HeroDetail(
-            heroId = it.arguments?.get("heroId") as Int?
+            heroDetailState = heroDetailViewModel.state.value,
+            imageLoader = imageLoader,
         )
     }
 }
