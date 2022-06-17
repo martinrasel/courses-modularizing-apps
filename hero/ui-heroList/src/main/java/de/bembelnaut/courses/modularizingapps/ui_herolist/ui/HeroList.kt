@@ -16,13 +16,16 @@ import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListIte
 fun HeroList(
     state: HeroListState,
     imageLoader: ImageLoader,
+    navigateToDetailScreen: (Int) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn {
             items(state.heros) {
                 HeroListItem(
                     hero = it,
-                    onSelectHero = {},
+                    onSelectHero = { heroId ->
+                        navigateToDetailScreen(heroId)
+                    },
                     imageLoader = imageLoader,
                 )
             }
