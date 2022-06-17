@@ -24,11 +24,18 @@ constructor(
     @Named("heroListLogger") private val logger: Logger,
 ) : ViewModel() {
 
-
     val state: MutableState<HeroListState> = mutableStateOf(HeroListState())
 
     init {
-        getHeros()
+        onTriggerEvent(HeroListEvent.GetHeros)
+    }
+
+    fun onTriggerEvent(event: HeroListEvent) {
+        when(event) {
+            is HeroListEvent.GetHeros -> {
+                getHeros()
+            }
+        }
     }
 
     private fun getHeros() {
