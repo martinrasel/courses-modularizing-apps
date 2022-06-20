@@ -7,6 +7,8 @@
       <module name="Modularizing_Android_Apps.hero.ui-heroDetail" target="11" />
       <module name="Modularizing_Android_Apps.hero.ui-heroList" target="11" />
       <module name="ModularizingAndroidApps.buildSrc" target="11" />
+      <module name="ModularizingAndroidApps.buildSrc.main" target="11" />
+      <module name="ModularizingAndroidApps.buildSrc.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
