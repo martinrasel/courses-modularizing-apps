@@ -13,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
 import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.core.domain.UIComponentState
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListFilter
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListItem
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListToolbar
@@ -40,7 +41,7 @@ fun HeroList(
                     events(HeroListEvent.FilterHeros)
                 },
                 onShowFilterDialog = {
-
+                    events(HeroListEvent.UpdateFilterDialogState(UIComponentState.Show))
                 }
             )
             LazyColumn(
@@ -58,13 +59,16 @@ fun HeroList(
                 }
             }
         }
-        HeroListFilter(
-            heroFilter = state.heroFilter,
-            onUpdateHeroFilter = { heroFilter ->
-                events(HeroListEvent.UpdateHeroFilter(heroFilter))
-            },
-        ) {
-
+        if(state.filterDialogState is UIComponentState.Show){
+            HeroListFilter(
+                heroFilter = state.heroFilter,
+                onUpdateHeroFilter = { heroFilter ->
+                    events(HeroListEvent.UpdateHeroFilter(heroFilter))
+                },
+                onCloseDialog = {
+                    events(HeroListEvent.UpdateFilterDialogState(UIComponentState.Hide))
+                }
+            )
         }
 
         if (state.progressBarState is ProgressBarState.Loading) {

@@ -46,6 +46,9 @@ constructor(
             is HeroListEvent.UpdateHeroName -> {
                 updateHeroName(event.heroName)
             }
+            is HeroListEvent.UpdateFilterDialogState -> {
+                state.value = state.value.copy(filterDialogState = event.uiComponentState)
+            }
         }
     }
 
