@@ -4,7 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import de.bembelnaut.courses.modularizingapps.core.Logger
+import de.bembelnaut.courses.modularizingapps.core.util.Logger
+import de.bembelnaut.courses.modularizingapps.hero_interactors.FilterHeros
 import de.bembelnaut.courses.modularizingapps.hero_interactors.HeroInteractors
 import javax.inject.Named
 import javax.inject.Singleton
@@ -24,4 +25,11 @@ object HeroListModule {
         interactors: HeroInteractors
     ) = interactors.getHeros
 
+    @Provides
+    @Singleton
+    fun provideFilterHeros(
+        interactors: HeroInteractors
+    ): FilterHeros {
+        return interactors.filterHeros
+    }
 }

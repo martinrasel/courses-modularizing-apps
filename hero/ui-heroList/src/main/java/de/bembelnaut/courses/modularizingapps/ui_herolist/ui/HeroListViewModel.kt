@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.bembelnaut.courses.modularizingapps.core.DataState
-import de.bembelnaut.courses.modularizingapps.core.Logger
-import de.bembelnaut.courses.modularizingapps.core.UIComponent
+import de.bembelnaut.courses.modularizingapps.core.domain.DataState
+import de.bembelnaut.courses.modularizingapps.core.util.Logger
+import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
+import de.bembelnaut.courses.modularizingapps.hero_domain.HeroFilter
+import de.bembelnaut.courses.modularizingapps.hero_interactors.FilterHeros
 import de.bembelnaut.courses.modularizingapps.hero_interactors.GetHeros
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -20,6 +22,7 @@ class HeroListViewModel
 @Inject
 constructor(
     private val getHeros: GetHeros,
+    private val filterHeros: FilterHeros,
     @Named("heroListLogger") private val logger: Logger,
 ) : ViewModel() {
 
@@ -37,10 +40,18 @@ constructor(
             is HeroListEvent.FilterHeros -> {
                 filterHeros()
             }
+            is HeroListEvent.UpdateHeroFilter -> {
+                updateHeroFilter(event.heroFilter)
+            }
             is HeroListEvent.UpdateHeroName -> {
                 updateHeroName(event.heroName)
             }
         }
+    }
+
+    private fun updateHeroFilter(heroFilter: HeroFilter){
+        state.value = state.value.copy(heroFilter = heroFilter)
+        filterHeros()
     }
 
     private fun updateHeroName(heroName: String) {
@@ -48,10 +59,12 @@ constructor(
     }
 
     private fun filterHeros() {
-        val filteredList: MutableList<Hero> = state.value.heros.filter {
-            it.localizedName.lowercase().contains(state.value.heroName.lowercase())
-        }.toMutableList()
-
+        val filteredList = filterHeros.execute(
+            current = state.value.heros,
+            heroName = state.value.heroName,
+            heroFilter = state.value.heroFilter,
+            attributeFilter = state.value.primaryAttrFilter,
+        )
         state.value = state.value.copy(filteredHeros = filteredList)
     }
 

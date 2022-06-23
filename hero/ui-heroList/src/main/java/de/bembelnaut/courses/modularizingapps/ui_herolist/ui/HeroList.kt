@@ -1,5 +1,6 @@
 package de.bembelnaut.courses.modularizingapps.ui_herolist.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
-import de.bembelnaut.courses.modularizingapps.core.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListFilter
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListItem
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListToolbar
 
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @Composable
 fun HeroList(
@@ -54,6 +57,14 @@ fun HeroList(
                     )
                 }
             }
+        }
+        HeroListFilter(
+            heroFilter = state.heroFilter,
+            onUpdateHeroFilter = { heroFilter ->
+                events(HeroListEvent.UpdateHeroFilter(heroFilter))
+            },
+        ) {
+
         }
 
         if (state.progressBarState is ProgressBarState.Loading) {

@@ -1,4 +1,4 @@
-package de.bembelnaut.courses.modularizingapps.core
+package de.bembelnaut.courses.modularizingapps.core.util
 
 class Logger(
     private val tag: String,

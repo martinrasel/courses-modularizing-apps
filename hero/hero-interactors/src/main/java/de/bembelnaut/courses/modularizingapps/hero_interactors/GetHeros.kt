@@ -1,8 +1,8 @@
 package de.bembelnaut.courses.modularizingapps.hero_interactors
 
-import de.bembelnaut.courses.modularizingapps.core.DataState
-import de.bembelnaut.courses.modularizingapps.core.ProgressBarState
-import de.bembelnaut.courses.modularizingapps.core.UIComponent
+import de.bembelnaut.courses.modularizingapps.core.domain.DataState
+import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
 import de.bembelnaut.courses.modularizingapps.hero_datasource.cache.HeroCache
 import de.bembelnaut.courses.modularizingapps.hero_datasource.network.HeroService
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero

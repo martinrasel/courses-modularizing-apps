@@ -6,12 +6,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.bembelnaut.courses.modularizingapps.core.DataState
-import de.bembelnaut.courses.modularizingapps.core.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.core.domain.DataState
+import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
 import de.bembelnaut.courses.modularizingapps.hero_interactors.GetHeroFromCache
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.lang.reflect.Constructor
 import javax.inject.Inject
 
 @HiltViewModel
