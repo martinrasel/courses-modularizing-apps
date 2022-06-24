@@ -57,7 +57,7 @@ fun OrderSelector(
         ) {
             Checkbox(
                 modifier = Modifier
-                    .padding(end = 8.dp)
+//                    .padding(end = 8.dp)
                     .align(Alignment.CenterVertically),
                 enabled = isEnabled,
                 checked = isEnabled && isDescSelected,
@@ -69,6 +69,7 @@ fun OrderSelector(
             Text(
                 text = descString,
                 style = MaterialTheme.typography.body1,
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
         }
     }
@@ -90,7 +91,7 @@ fun OrderSelector(
         ) {
             Checkbox(
                 modifier = Modifier
-                    .padding(end = 8.dp)
+//                    .padding(end = 8.dp)
                     .testTag(TAG_HERO_FILTER_ASC)
                     .align(Alignment.CenterVertically),
                 enabled = isEnabled,
@@ -103,6 +104,7 @@ fun OrderSelector(
             Text(
                 text = ascString,
                 style = MaterialTheme.typography.body1,
+                modifier = Modifier.align(Alignment.CenterVertically)
             )
         }
     }

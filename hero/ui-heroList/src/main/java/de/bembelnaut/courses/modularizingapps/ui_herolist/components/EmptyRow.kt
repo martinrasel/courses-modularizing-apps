@@ -19,7 +19,7 @@ fun EmptyRow(){
     ){
         Text(
             text = "",
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.h6,
         )
     }
 }

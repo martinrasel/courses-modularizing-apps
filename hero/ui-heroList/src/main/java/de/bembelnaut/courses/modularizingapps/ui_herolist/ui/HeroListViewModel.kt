@@ -9,6 +9,7 @@ import de.bembelnaut.courses.modularizingapps.core.domain.DataState
 import de.bembelnaut.courses.modularizingapps.core.util.Logger
 import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
+import de.bembelnaut.courses.modularizingapps.hero_domain.HeroAttribute
 import de.bembelnaut.courses.modularizingapps.hero_domain.HeroFilter
 import de.bembelnaut.courses.modularizingapps.hero_interactors.FilterHeros
 import de.bembelnaut.courses.modularizingapps.hero_interactors.GetHeros
@@ -46,10 +47,18 @@ constructor(
             is HeroListEvent.UpdateHeroName -> {
                 updateHeroName(event.heroName)
             }
+            is HeroListEvent.UpdateAttributeFilter -> {
+                updateAttributeFilter(event.attribute)
+            }
             is HeroListEvent.UpdateFilterDialogState -> {
                 state.value = state.value.copy(filterDialogState = event.uiComponentState)
             }
         }
+    }
+
+    private fun updateAttributeFilter(attribute: HeroAttribute) {
+        state.value = state.value.copy(primaryAttrFilter = attribute)
+        filterHeros()
     }
 
     private fun updateHeroFilter(heroFilter: HeroFilter){
