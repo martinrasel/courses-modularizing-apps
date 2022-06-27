@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
+import de.bembelnaut.courses.modularizingapps.components.DefaultScreenUI
 import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
 import de.bembelnaut.courses.modularizingapps.core.domain.UIComponentState
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListFilter
@@ -27,9 +28,8 @@ fun HeroList(
     imageLoader: ImageLoader,
     navigateToDetailScreen: (Int) -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    DefaultScreenUI(
+        progressBarState = state.progressBarState,
     ) {
         Column {
             HeroListToolbar(
@@ -72,12 +72,6 @@ fun HeroList(
                 onCloseDialog = {
                     events(HeroListEvent.UpdateFilterDialogState(UIComponentState.Hide))
                 }
-            )
-        }
-
-        if (state.progressBarState is ProgressBarState.Loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
             )
         }
     }

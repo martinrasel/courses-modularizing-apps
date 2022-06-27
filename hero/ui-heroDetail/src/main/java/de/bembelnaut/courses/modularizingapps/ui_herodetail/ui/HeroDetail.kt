@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import de.bembelnaut.courses.modularizingapps.components.DefaultScreenUI
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
 import de.bembelnaut.courses.modularizingapps.hero_domain.maxAttackDmg
 import de.bembelnaut.courses.modularizingapps.hero_domain.minAttackDmg
@@ -30,79 +31,83 @@ fun HeroDetail(
     heroDetailState: HeroDetailState,
     imageLoader: ImageLoader,
 ) {
-    heroDetailState.hero?.let { hero ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-        ) {
-            item {
-                Column {
-                    AsyncImage(
-                        model = hero.img,
-                        contentDescription = hero.localizedName,
-                        imageLoader = imageLoader,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .defaultMinSize(minHeight = 200.dp),
-                        contentScale = ContentScale.Crop,
-                        placeholder = painterResource(
-                            if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background
-                        ),
-                        error = painterResource(id = R.drawable.error_image)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp)
-                    ) {
-                        Row(
+    DefaultScreenUI(
+        progressBarState = heroDetailState.progressBarState,
+    ) {
+        heroDetailState.hero?.let { hero ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
+            ) {
+                item {
+                    Column {
+                        AsyncImage(
+                            model = hero.img,
+                            contentDescription = hero.localizedName,
+                            imageLoader = imageLoader,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .defaultMinSize(minHeight = 200.dp),
+                            contentScale = ContentScale.Crop,
+                            placeholder = painterResource(
+                                if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background
+                            ),
+                            error = painterResource(id = R.drawable.error_image)
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(12.dp)
                         ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterVertically)
+                                        .padding(end = 8.dp),
+                                    text = hero.localizedName,
+                                    style = MaterialTheme.typography.h1,
+                                )
+                                AsyncImage(
+                                    model = hero.icon,
+                                    modifier = Modifier
+                                        .height(30.dp)
+                                        .width(30.dp)
+                                        .align(Alignment.CenterVertically),
+                                    imageLoader = imageLoader,
+                                    placeholder = painterResource(
+                                        if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background
+                                    ),
+                                    contentDescription = hero.localizedName,
+                                    contentScale = ContentScale.Crop,
+                                    error = painterResource(id = R.drawable.error_image)
+                                )
+                            }
                             Text(
                                 modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .padding(end = 8.dp),
-                                text = hero.localizedName,
-                                style = MaterialTheme.typography.h1,
+                                    .padding(bottom = 4.dp),
+                                text = hero.primaryAttribute.uiValue,
+                                style = MaterialTheme.typography.subtitle1,
                             )
-                            AsyncImage(
-                                model = hero.icon,
+                            Text(
                                 modifier = Modifier
-                                    .height(30.dp)
-                                    .width(30.dp)
-                                    .align(Alignment.CenterVertically),
-                                imageLoader = imageLoader,
-                                placeholder = painterResource(
-                                    if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background
-                                ),
-                                contentDescription = hero.localizedName,
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(id = R.drawable.error_image)
+                                    .padding(bottom = 12.dp),
+                                text = hero.attackType.uiValue,
+                                style = MaterialTheme.typography.caption,
                             )
+                            HeroBaseStats(
+                                hero = hero,
+                                padding = 10.dp,
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            WinPercentages(hero = hero)
                         }
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 4.dp),
-                            text = hero.primaryAttribute.uiValue,
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 12.dp),
-                            text = hero.attackType.uiValue,
-                            style = MaterialTheme.typography.caption,
-                        )
-                        HeroBaseStats(
-                            hero = hero,
-                            padding = 10.dp,
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        WinPercentages(hero = hero)
                     }
                 }
             }
