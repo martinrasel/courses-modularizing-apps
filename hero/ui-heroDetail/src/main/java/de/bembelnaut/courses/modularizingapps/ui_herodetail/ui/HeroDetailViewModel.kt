@@ -8,10 +8,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.bembelnaut.courses.modularizingapps.core.domain.DataState
 import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
+import de.bembelnaut.courses.modularizingapps.core.domain.Queue
+import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
+import de.bembelnaut.courses.modularizingapps.core.util.Logger
 import de.bembelnaut.courses.modularizingapps.hero_interactors.GetHeroFromCache
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class HeroDetailViewModel
@@ -19,6 +23,7 @@ class HeroDetailViewModel
 constructor(
     private val getHeroFromCache: GetHeroFromCache,
     private val savedStateHandle: SavedStateHandle,
+    @Named("heroListLogger") private val logger: Logger,
 ) : ViewModel() {
 
     val state: MutableState<HeroDetailState> = mutableStateOf(HeroDetailState(progressBarState = ProgressBarState.Idle))
@@ -48,10 +53,23 @@ constructor(
                     state.value = state.value.copy(hero = dataState.data)
                 }
                 is DataState.Response -> {
-                    // TODO(handle errors)
+                    when (dataState.uiComponent) {
+                        is UIComponent.Dialog -> {
+                            appendToMessageQueue(dataState.uiComponent)
+                        }
+                        is UIComponent.None -> {
+                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
+                        }
+                    }
                 }
             }
         }.launchIn(viewModelScope)
     }
 
+    private fun appendToMessageQueue(uiComponent: UIComponent){
+        val queue = state.value.errorQueue
+        queue.add(uiComponent)
+        state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+        state.value = state.value.copy(errorQueue = queue)
+    }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.bembelnaut.courses.modularizingapps.core.domain.DataState
+import de.bembelnaut.courses.modularizingapps.core.domain.Queue
 import de.bembelnaut.courses.modularizingapps.core.util.Logger
 import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
 import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
@@ -86,10 +87,10 @@ constructor(
                 is DataState.Response -> {
                     when (dataState.uiComponent) {
                         is UIComponent.Dialog -> {
-                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
+                            appendToMessageQueue(dataState.uiComponent)
                         }
                         is UIComponent.None -> {
-                            logger.log((dataState.uiComponent as UIComponent.None).message)
+                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
                         }
                     }
                 }
@@ -104,4 +105,10 @@ constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun appendToMessageQueue(uiComponent: UIComponent){
+        val queue = state.value.errorQueue
+        queue.add(uiComponent)
+        state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+        state.value = state.value.copy(errorQueue = queue)
+    }
 }
