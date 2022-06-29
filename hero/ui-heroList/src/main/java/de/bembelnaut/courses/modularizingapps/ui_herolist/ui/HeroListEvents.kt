@@ -4,25 +4,27 @@ import de.bembelnaut.courses.modularizingapps.core.domain.UIComponentState
 import de.bembelnaut.courses.modularizingapps.hero_domain.HeroAttribute
 import de.bembelnaut.courses.modularizingapps.hero_domain.HeroFilter
 
-sealed class HeroListEvent {
+sealed class HeroListEvents {
 
-    object GetHeros : HeroListEvent()
+    object GetHeros : HeroListEvents()
 
-    object FilterHeros : HeroListEvent()
+    object FilterHeros : HeroListEvents()
 
     data class UpdateHeroName(
         val heroName: String,
-    ) : HeroListEvent()
+    ) : HeroListEvents()
 
     data class UpdateHeroFilter(
         val heroFilter: HeroFilter
-    ) : HeroListEvent()
+    ) : HeroListEvents()
 
     data class UpdateAttributeFilter(
         val attribute: HeroAttribute
-    ): HeroListEvent()
+    ): HeroListEvents()
 
     data class UpdateFilterDialogState(
         val uiComponentState: UIComponentState
-    ) : HeroListEvent()
+    ) : HeroListEvents()
+
+    object OnRemoveHeadFromQueue: HeroListEvents()
 }

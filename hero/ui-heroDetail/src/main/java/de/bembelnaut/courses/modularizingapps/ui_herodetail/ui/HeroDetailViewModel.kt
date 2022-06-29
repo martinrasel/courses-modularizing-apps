@@ -39,6 +39,9 @@ constructor(
             is HeroDetailEvents.GetHeroFromCache -> {
                 getHeroFromCache(event.id)
             }
+            is HeroDetailEvents.OnRemoveHeadFromQueue -> {
+                removeHeadMessage()
+            }
         }
 
     }
@@ -71,5 +74,16 @@ constructor(
         queue.add(uiComponent)
         state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
         state.value = state.value.copy(errorQueue = queue)
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.errorQueue
+            queue.remove() // can throw exception if empty
+            state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+            state.value = state.value.copy(errorQueue = queue)
+        }catch (e: Exception){
+            logger.log("Nothing to remove from DialogQueue")
+        }
     }
 }

@@ -1,19 +1,15 @@
 package de.bembelnaut.courses.modularizingapps.ui_herolist.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
 import de.bembelnaut.courses.modularizingapps.components.DefaultScreenUI
-import de.bembelnaut.courses.modularizingapps.core.domain.ProgressBarState
 import de.bembelnaut.courses.modularizingapps.core.domain.UIComponentState
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListFilter
 import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListItem
@@ -24,14 +20,14 @@ import de.bembelnaut.courses.modularizingapps.ui_herolist.components.HeroListToo
 @Composable
 fun HeroList(
     state: HeroListState,
-    events: (HeroListEvent) -> Unit,
+    events: (HeroListEvents) -> Unit,
     imageLoader: ImageLoader,
     navigateToDetailScreen: (Int) -> Unit,
 ) {
     DefaultScreenUI(
         queue = state.errorQueue,
         onRemoveHeadFromQueue = {
-            // TODO(remove head message)
+            events(HeroListEvents.OnRemoveHeadFromQueue)
         },
         progressBarState = state.progressBarState,
     ) {
@@ -39,13 +35,13 @@ fun HeroList(
             HeroListToolbar(
                 heroName = state.heroName,
                 onHeroNameChanged = { heroName ->
-                    events(HeroListEvent.UpdateHeroName(heroName = heroName))
+                    events(HeroListEvents.UpdateHeroName(heroName = heroName))
                 },
                 onExecuteSearch = {
-                    events(HeroListEvent.FilterHeros)
+                    events(HeroListEvents.FilterHeros)
                 },
                 onShowFilterDialog = {
-                    events(HeroListEvent.UpdateFilterDialogState(UIComponentState.Show))
+                    events(HeroListEvents.UpdateFilterDialogState(UIComponentState.Show))
                 }
             )
             LazyColumn(
@@ -67,14 +63,14 @@ fun HeroList(
             HeroListFilter(
                 heroFilter = state.heroFilter,
                 onUpdateHeroFilter = { heroFilter ->
-                    events(HeroListEvent.UpdateHeroFilter(heroFilter))
+                    events(HeroListEvents.UpdateHeroFilter(heroFilter))
                 },
                 attributeFilter = state.primaryAttrFilter,
                 onUpdateAttributeFilter = { attribute ->
-                    events(HeroListEvent.UpdateAttributeFilter(attribute))
+                    events(HeroListEvents.UpdateAttributeFilter(attribute))
                 },
                 onCloseDialog = {
-                    events(HeroListEvent.UpdateFilterDialogState(UIComponentState.Hide))
+                    events(HeroListEvents.UpdateFilterDialogState(UIComponentState.Hide))
                 }
             )
         }

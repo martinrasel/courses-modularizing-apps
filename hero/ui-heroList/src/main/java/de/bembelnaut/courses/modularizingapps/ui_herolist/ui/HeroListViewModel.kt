@@ -9,7 +9,6 @@ import de.bembelnaut.courses.modularizingapps.core.domain.DataState
 import de.bembelnaut.courses.modularizingapps.core.domain.Queue
 import de.bembelnaut.courses.modularizingapps.core.util.Logger
 import de.bembelnaut.courses.modularizingapps.core.domain.UIComponent
-import de.bembelnaut.courses.modularizingapps.hero_domain.Hero
 import de.bembelnaut.courses.modularizingapps.hero_domain.HeroAttribute
 import de.bembelnaut.courses.modularizingapps.hero_domain.HeroFilter
 import de.bembelnaut.courses.modularizingapps.hero_interactors.FilterHeros
@@ -31,28 +30,44 @@ constructor(
     val state: MutableState<HeroListState> = mutableStateOf(HeroListState())
 
     init {
-        onTriggerEvent(HeroListEvent.GetHeros)
+        onTriggerEvent(HeroListEvents.GetHeros)
+
+        appendToMessageQueue(
+            uiComponent = UIComponent.Dialog(
+                title = "test",
+                description = "just testing"
+            )
+        )
+        appendToMessageQueue(
+            uiComponent = UIComponent.Dialog(
+                title = "Testing again",
+                description = "I dunno just another test"
+            )
+        )
     }
 
-    fun onTriggerEvent(event: HeroListEvent) {
+    fun onTriggerEvent(event: HeroListEvents) {
         when (event) {
-            is HeroListEvent.GetHeros -> {
+            is HeroListEvents.GetHeros -> {
                 getHeros()
             }
-            is HeroListEvent.FilterHeros -> {
+            is HeroListEvents.FilterHeros -> {
                 filterHeros()
             }
-            is HeroListEvent.UpdateHeroFilter -> {
+            is HeroListEvents.UpdateHeroFilter -> {
                 updateHeroFilter(event.heroFilter)
             }
-            is HeroListEvent.UpdateHeroName -> {
+            is HeroListEvents.UpdateHeroName -> {
                 updateHeroName(event.heroName)
             }
-            is HeroListEvent.UpdateAttributeFilter -> {
+            is HeroListEvents.UpdateAttributeFilter -> {
                 updateAttributeFilter(event.attribute)
             }
-            is HeroListEvent.UpdateFilterDialogState -> {
+            is HeroListEvents.UpdateFilterDialogState -> {
                 state.value = state.value.copy(filterDialogState = event.uiComponentState)
+            }
+            is HeroListEvents.OnRemoveHeadFromQueue -> {
+                removeHeadMessage()
             }
         }
     }
@@ -110,5 +125,16 @@ constructor(
         queue.add(uiComponent)
         state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
         state.value = state.value.copy(errorQueue = queue)
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.errorQueue
+            queue.remove() // can throw exception if empty
+            state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+            state.value = state.value.copy(errorQueue = queue)
+        }catch (e: Exception){
+            logger.log("Nothing to remove from DialogQueue")
+        }
     }
 }

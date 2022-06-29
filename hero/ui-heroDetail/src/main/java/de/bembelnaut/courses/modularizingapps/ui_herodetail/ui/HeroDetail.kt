@@ -29,12 +29,13 @@ import kotlin.math.round
 @Composable
 fun HeroDetail(
     heroDetailState: HeroDetailState,
+    events: (HeroDetailEvents) -> Unit,
     imageLoader: ImageLoader,
 ) {
     DefaultScreenUI(
         queue = heroDetailState.errorQueue,
         onRemoveHeadFromQueue = {
-            // TODO(remove head message)
+            events(HeroDetailEvents.OnRemoveHeadFromQueue)
         },
         progressBarState = heroDetailState.progressBarState,
     ) {

@@ -129,6 +129,7 @@ fun NavGraphBuilder.addHeroDetail(
         val viewModel: HeroDetailViewModel = hiltViewModel()
         HeroDetail(
             heroDetailState = viewModel.state.value,
+            events = viewModel::onTriggerEvent,
             imageLoader = imageLoader,
         )
     }
