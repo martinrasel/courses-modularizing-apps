@@ -1,5 +1,6 @@
 package de.bembelnaut.courses.modularizingapps.ui_herolist.components
 
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import de.bembelnaut.courses.modularizingapps.ui_herolist.ui.test.TAG_HERO_FILTER_BTN
 import de.bembelnaut.courses.modularizingapps.ui_herolist.ui.test.TAG_HERO_SEARCH_BAR
 
-
 @ExperimentalComposeUiApi
 @Composable
 fun HeroListToolbar(
@@ -48,7 +48,8 @@ fun HeroListToolbar(
                 modifier = Modifier
                     .fillMaxWidth(.9f)
                     .padding(8.dp)
-                    .testTag(TAG_HERO_SEARCH_BAR),
+                    .testTag(TAG_HERO_SEARCH_BAR)
+                ,
                 value = heroName,
                 onValueChange = {
                     onHeroNameChanged(it)
@@ -75,11 +76,12 @@ fun HeroListToolbar(
                     .clickable {
                         onShowFilterDialog()
                     }
+                    .testTag(TAG_HERO_FILTER_BTN)
             ) {
                 Icon(
                     modifier = Modifier
                         .padding(8.dp)
-                        .testTag(TAG_HERO_FILTER_BTN),
+                    ,
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = "Filter Icon"
                 )

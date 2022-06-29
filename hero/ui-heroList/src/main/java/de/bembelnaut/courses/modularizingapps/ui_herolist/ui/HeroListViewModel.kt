@@ -31,19 +31,6 @@ constructor(
 
     init {
         onTriggerEvent(HeroListEvents.GetHeros)
-
-        appendToMessageQueue(
-            uiComponent = UIComponent.Dialog(
-                title = "test",
-                description = "just testing"
-            )
-        )
-        appendToMessageQueue(
-            uiComponent = UIComponent.Dialog(
-                title = "Testing again",
-                description = "I dunno just another test"
-            )
-        )
     }
 
     fun onTriggerEvent(event: HeroListEvents) {
